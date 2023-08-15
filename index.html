@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="initial-scale=1, maximum-scale=1, user-scalable=no"
+    />
+    <title>Web ブラウザーに地図を表示してみよう！</title>
+    <link
+      rel="stylesheet"
+      href="https://js.arcgis.com/4.22/esri/themes/light/main.css"
+    />
+    <script src="https://js.arcgis.com/4.22/"></script>
+    <script>
+      require(["esri/Map", "esri/views/MapView"], (Map, MapView) => {
+        // 地図作成のコード
+        const map = new Map({
+          basemap: "streets",
+        });
+
+        const view = new MapView({
+          container: "viewDiv",
+          map: map,
+        });
+      });
+    </script>
+    <style>
+      html,
+      body,
+      #viewDiv {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="viewDiv"></div>
+  </body>
+</html>
