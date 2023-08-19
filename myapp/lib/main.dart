@@ -3,10 +3,12 @@ import 'package:geolocator/geolocator.dart';
 
 void main() {
   // 最初に表示するWidget
-  runApp(MyTodoApp());
+  runApp(const MyTodoApp());
 }
 
 class MyTodoApp extends StatelessWidget {
+  const MyTodoApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -17,13 +19,15 @@ class MyTodoApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       // リスト一覧画面を表示
-      home: TodoListPage(),
+      home: const TodoListPage(),
     );
   }
 }
 
 // リスト一覧画面用Widget
 class TodoListPage extends StatelessWidget {
+  const TodoListPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +40,7 @@ class TodoListPage extends StatelessWidget {
           Navigator.of(context).push(
             MaterialPageRoute(builder: (context) {
               // 遷移先の画面としてリスト追加画面を指定
-              return MyGPS();
+              return const MyGPS();
             }),
           );
         },
@@ -48,6 +52,8 @@ class TodoListPage extends StatelessWidget {
 
 //GPS情報を取得する
 class MyGPS extends StatelessWidget {
+  const MyGPS({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,7 +67,25 @@ class MyGPS extends StatelessWidget {
             //現在のGPS情報を取得する
             final position = await Geolocator.getCurrentPosition(
                 desiredAccuracy: LocationAccuracy.high);
-            print(position);
+            //positionから緯度経度を取得して表示する
+            final latitude = position.latitude;
+            final longitude = position.longitude;
+            // ignore: use_build_context_synchronously
+            await showDialog<void>(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: const Text('現在地'),
+                  content: Text('緯度：$latitude\n経度：$longitude'),
+                  actions: <Widget>[
+                    TextButton(
+                      child: const Text('OK'),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  ],
+                );
+              },
+            );
           },
         ),
       ),
