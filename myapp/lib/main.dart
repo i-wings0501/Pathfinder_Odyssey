@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-// import 'package:geolocator/geolocator.dart';
-// import 'package:http/http.dart' as http;
 import 'package:myapp/get_gps.dart';
 
 void main() {
@@ -16,13 +14,13 @@ class MyTodoApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       // アプリ名
-      title: 'My Todo App',
+      title: 'Pathfinder Odyssey',
       theme: ThemeData(
         // テーマカラー
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.green,
       ),
       // リスト一覧画面を表示
-      home: const TodoListPage(),
+      home: TodoListPage(title: 'My App'),
     );
   }
 }
@@ -54,34 +52,36 @@ class MyTodoApp extends StatelessWidget {
 // }
 
 //top画面home:TodoListPage()の画面
+// ignore: must_be_immutable
 class TodoListPage extends StatelessWidget {
-  const TodoListPage({super.key});
+  TodoListPage({super.key, required this.title});
+
+  final String title;
+
+  //入力されたテキストを受け取る
+  final myController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('GPS情報'),
+        title: const Text('Pathfinder Odyssey'),
       ),
       body: Container(
         width: double.infinity,
         child: Column(children: <Widget>[
           const SizedBox(height: 120),
           TextField(
+            controller: myController,
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
               hintText: '検索したい場所を入力してください',
             ),
-            onChanged: (text) {
-              //入力されたテキストを受け取る
-              var inputText = text;
-              //入力されたテキストをデバッグエリアに表示
-              print(inputText);
-            },
           ),
           TextButton(
             child: const Text('検索'),
             onPressed: () async {
+              print(myController.text);
               //新しい画面にresponse.bodyを表示する;
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) {
