@@ -32,7 +32,7 @@ class serchPage extends State<FutureBuilderPage> {
     var response = await http.post(
         Uri.parse("http://localhost:3000/gps?lat=${gps[0]}&lon=${gps[1]}"));
     //「緯度：latitude,経度：longitude」をprintする
-    print("緯度：${gps[0]}、経度：${gps[1]}}");
+    print("緯度：${gps[0]}、経度：${gps[1]}");
     return (response.body);
   }
 
