@@ -6,7 +6,7 @@ import (
 )
 
 //jsonFileWriteという配列を作成
-var jsonFileWrite = `[{"lat":35.658034,"lng":139.701636,"name":"東京駅"},{"lat":35.681167,"lng":139.767052,"name":"新宿駅"},{"lat":35.710063,"lng":139.8107,"name":"池袋駅"},{"lat":35.729189,"lng":139.710002,"name":"上野駅"},{"lat":35.658034,"lng":139.701636,"name":"東京駅"}]`
+var jsonFileWrite = `conect success`
 
 
 func main() {
@@ -30,8 +30,10 @@ func handler(w http.ResponseWriter, r *http.Request) {
     // fmt.Fprintln(w, "Bad request!")
 	latitude := r.FormValue("lat")
 	lontitude := r.FormValue("lon")
-	if latitude!=""&&lontitude!=""{
+	porpose := r.FormValue("porpose")
+	if latitude!=""&&lontitude!=""&&porpose!=""{
 		//goglemapのAPIを叩く
+		fmt.Printf("latitude:" + latitude +", " + "lontitude:" + lontitude + ", " + "porpose:" + porpose)
 	}else{
 		fmt.Println("No data")
 	}
