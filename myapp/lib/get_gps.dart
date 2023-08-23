@@ -22,7 +22,7 @@ class SerchPageTodo extends State<SerchPage> {
 
   late Future<String> future;
 
-  //localhost:3000のサーバーにhttp通信で現在地を送信する関数
+  //現在地を取得する関数
   _getMYgps() async {
     //現在地を取得する
     final position = await Geolocator.getCurrentPosition(
@@ -36,16 +36,19 @@ class SerchPageTodo extends State<SerchPage> {
     return [latitude, longitude];
   }
 
+  //localhost:3000のサーバーにhttp通信で現在地をPOSTする関数
   Future<String> http_post() async {
     //200--success
     var gps = await _getMYgps();
     var response = await http.post(Uri.parse(
+        //localhost:3000/gps?lat=latitude&lon=longitude&porpose=porpose
         "http://localhost:3000/gps?lat=${gps[0]}&lon=${gps[1]}&porpose=$porpose"));
     //「緯度：latitude,経度：longitude」をprintする
     print("緯度：${gps[0]}、経度：${gps[1]}");
     return (response.body);
   }
 
+  //初期化
   @override
   void initState() {
     super.initState();
@@ -54,6 +57,7 @@ class SerchPageTodo extends State<SerchPage> {
     });
   }
 
+  //画面の描画
   @override
   Widget build(BuildContext context) {
     return Scaffold(
