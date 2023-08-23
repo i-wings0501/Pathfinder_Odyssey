@@ -61,6 +61,7 @@ class TopPageTodo extends StatelessWidget {
   //入力されたテキストを受け取る
   final myController = TextEditingController();
 
+  //画面の描画
   @override
   Widget build(BuildContext context) {
     return Scaffold(
