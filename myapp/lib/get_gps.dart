@@ -4,21 +4,21 @@ import 'package:http/http.dart' as http;
 
 //検索結果表示画面
 class SerchPage extends StatefulWidget {
-  //前の画面から受け取った値を格納する変数:porpose
-  SerchPage(this.porpose);
-  final String porpose;
+  //前の画面から受け取った値を格納する変数:purpose
+  SerchPage(this.purpose);
+  final String purpose;
 
   @override
   //SerchPageTodoを返す
-  //SerchPageTodoにporposeを渡す
-  State<SerchPage> createState() => SerchPageTodo(porpose);
+  //SerchPageTodoにpurposeを渡す
+  State<SerchPage> createState() => SerchPageTodo(purpose);
 }
 
 //検索結果表示画面のwidget
 class SerchPageTodo extends State<SerchPage> {
-  //SerchPageから受け取った値を格納する変数:porpose
-  SerchPageTodo(this.porpose);
-  final String porpose;
+  //SerchPageから受け取った値を格納する変数:purpose
+  SerchPageTodo(this.purpose);
+  final String purpose;
 
   late Future<String> future;
 
@@ -41,8 +41,8 @@ class SerchPageTodo extends State<SerchPage> {
     //200--success
     var gps = await _getMYgps();
     var response = await http.post(Uri.parse(
-        //localhost:3000/gps?lat=latitude&lon=longitude&porpose=porpose
-        "http://localhost:3000/gps?lat=${gps[0]}&lon=${gps[1]}&porpose=$porpose"));
+        //localhost:3000/gps?lat=latitude&lon=longitude&purpose=purpose
+        "http://localhost:3000/gps?lat=${gps[0]}&lon=${gps[1]}&purpose=$purpose"));
     //「緯度：latitude,経度：longitude」をprintする
     print("緯度：${gps[0]}、経度：${gps[1]}");
     return (response.body);
@@ -62,14 +62,15 @@ class SerchPageTodo extends State<SerchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        //検索結果表示画面のタイトル
         title: const Text('GPS情報'),
       ),
       body: Center(
         child: Center(
           child: Column(
+            //中央配置
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(porpose),
               FutureBuilder(
                 future: future,
                 builder: (context, AsyncSnapshot<String> snapshot) {
