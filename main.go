@@ -5,9 +5,6 @@ import (
 	"net/http"
 )
 
-//jsonFileWriteという配列を作成
-var jsonFileWrite = `conect success`
-
 
 func main() {
 	http.HandleFunc("/gps", handler)
@@ -22,19 +19,17 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
     // ステータスコードの設定
     // この後でレスポンスヘッダの設定はできない
-    
-
-    // レスポンスボディの書き込み
-    w.Write([]byte(jsonFileWrite))
-    // http.Requestはio.Writerとして扱えるため、これでもOK
-    // fmt.Fprintln(w, "Bad request!")
-	latitude := r.FormValue("lat")
+    latitude := r.FormValue("lat")
 	lontitude := r.FormValue("lon")
-	porpose := r.FormValue("porpose")
-	if latitude!=""&&lontitude!=""&&porpose!=""{
+	purpose := r.FormValue("purpose")
+	if latitude!=""&&lontitude!=""&&purpose!=""{
 		//goglemapのAPIを叩く
-		fmt.Printf("latitude:" + latitude +", " + "lontitude:" + lontitude + ", " + "porpose:" + porpose)
+		fmt.Printf("latitude:" + latitude + ", " + "lontitude:" + lontitude + ", " + "purpose:" + purpose)
 	}else{
 		fmt.Println("No data")
 	}
+
+    // レスポンスボディの書き込み
+    w.Write([]byte(purpose))
+    
 }
