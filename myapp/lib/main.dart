@@ -3,12 +3,12 @@ import 'package:myapp/get_gps.dart';
 
 void main() {
   // 最初に表示するWidget
-  runApp(const MyTodoApp());
+  runApp(const TopPage());
 }
 
 //top画面
-class MyTodoApp extends StatelessWidget {
-  const MyTodoApp({super.key});
+class TopPage extends StatelessWidget {
+  const TopPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,14 +20,14 @@ class MyTodoApp extends StatelessWidget {
         primarySwatch: Colors.green,
       ),
       // リスト一覧画面を表示
-      home: TodoListPage(title: 'My App'),
+      home: TopPageTodo(title: 'My App'),
     );
   }
 }
 
 // リスト一覧画面用Widget
-// class TodoListPage extends StatelessWidget {
-//   const TodoListPage({super.key});
+// class TopPageTodo extends StatelessWidget {
+//   const TopPageTodo({super.key});
 
 //   @override
 //   Widget build(BuildContext context) {
@@ -51,10 +51,10 @@ class MyTodoApp extends StatelessWidget {
 //   }
 // }
 
-//top画面home:TodoListPage()の画面
+//top画面のwidget
 // ignore: must_be_immutable
-class TodoListPage extends StatelessWidget {
-  TodoListPage({super.key, required this.title});
+class TopPageTodo extends StatelessWidget {
+  TopPageTodo({super.key, required this.title});
 
   final String title;
 
@@ -69,28 +69,44 @@ class TodoListPage extends StatelessWidget {
       ),
       body: Container(
         width: double.infinity,
-        child: Column(children: <Widget>[
-          const SizedBox(height: 120),
-          TextField(
-            controller: myController,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: '検索したい場所を入力してください',
-            ),
-          ),
-          TextButton(
-            child: const Text('検索'),
-            onPressed: () async {
-              print(myController.text);
-              //新しい画面にresponse.bodyを表示する;
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) {
-                  return const FutureBuilderPage();
-                }),
-              );
-            },
-          ),
-        ]),
+        child: Padding(
+          // テキストフィールドのpadding
+          padding: const EdgeInsets.all(20),
+          child: Column(
+              //中央配置
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                //テキストフィールド
+                TextField(
+                  //入力されたテキスト
+                  controller: myController,
+                  //テキストフィールドの装飾
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: '検索したい場所を入力してください',
+                  ),
+                ),
+                //検索ボタン
+                ElevatedButton(
+                  child: const Text('検索'),
+                  onPressed: () async {
+                    //新しい画面に遷移;
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        //遷移先の画面に入力されたテキストを渡す
+                        builder: (context) => SerchPage(myController.text),
+                      ),
+                    );
+                    // Navigator.of(context).push(
+                    //   MaterialPageRoute(builder: (context) {
+                    //     return const SerchPage();
+                    //   }),
+                    // );
+                  },
+                ),
+              ]),
+        ),
       ),
     );
   }
