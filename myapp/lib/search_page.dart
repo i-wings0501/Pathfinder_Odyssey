@@ -3,21 +3,21 @@ import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 
 //検索結果表示画面
-class SerchPage extends StatefulWidget {
+class searchPage extends StatefulWidget {
   //前の画面から受け取った値を格納する変数:purpose
-  SerchPage(this.purpose);
+  searchPage(this.purpose);
   final String purpose;
 
   @override
-  //SerchPageTodoを返す
-  //SerchPageTodoにpurposeを渡す
-  State<SerchPage> createState() => SerchPageTodo(purpose);
+  //searchPageTodoを返す
+  //searchPageTodoにpurposeを渡す
+  State<searchPage> createState() => searchPageTodo(purpose);
 }
 
 //検索結果表示画面のwidget
-class SerchPageTodo extends State<SerchPage> {
-  //SerchPageから受け取った値を格納する変数:purpose
-  SerchPageTodo(this.purpose);
+class searchPageTodo extends State<searchPage> {
+  //searchPageから受け取った値を格納する変数:purpose
+  searchPageTodo(this.purpose);
   final String purpose;
 
   late Future<String> future;

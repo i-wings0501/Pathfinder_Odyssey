@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/serch_page.dart';
+import 'package:myapp/search_page.dart';
 
 // リスト一覧画面用Widget
 // class TopPage extends StatelessWidget {
@@ -70,12 +70,12 @@ class TopPage extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         //遷移先の画面に入力されたテキストを渡す
-                        builder: (context) => SerchPage(myController.text),
+                        builder: (context) => searchPage(myController.text),
                       ),
                     );
                     // Navigator.of(context).push(
                     //   MaterialPageRoute(builder: (context) {
-                    //     return const SerchPage();
+                    //     return const searchPage();
                     //   }),
                     // );
                   },
