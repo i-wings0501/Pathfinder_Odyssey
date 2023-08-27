@@ -52,6 +52,7 @@ class TopPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 //テキストフィールド
+                //https://zenn.dev/kboy/books/ca6a9c93fd23f3/viewer/14dfcb
                 TextField(
                   //入力されたテキスト
                   controller: myController,
@@ -70,7 +71,7 @@ class TopPage extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         //遷移先の画面に入力されたテキストを渡す
-                        builder: (context) => searchPage(myController.text),
+                        builder: (context) => SearchPage(myController.text),
                       ),
                     );
                     // Navigator.of(context).push(
