@@ -4,21 +4,22 @@ import (
 	"fmt"
 	"os"
 
+	// 参照：https://zenn.dev/a_ichi1/articles/c9f3870350c5e2
 	"github.com/joho/godotenv"
 )
 
-func ReadEnv() string{
-	// ここで.envファイル全体を読み込みます。
-	// この読み込み処理がないと、個々の環境変数が取得出来ません。
-	// 読み込めなかったら err にエラーが入ります。
+// 参照：https://zenn.dev/a_ichi1/articles/c9f3870350c5e2
+func ReadEnv() string {
+	// envファイル全体を読み込み。
+	// envファイルがない場合はエラーになる。
 	err := godotenv.Load(".env")
 	
-	// もし err がnilではないなら、"読み込み出来ませんでした"が出力されます。
+	// もし err がnilではないなら、"読み込み出来ませんでした"が出力
 	if err != nil {
 		fmt.Printf("読み込み出来ませんでした: %v", err)
 	} 
 	
-	// .envの SAMPLE_MESSAGEを取得して、messageに代入します。
+	// API_keyの値を取得
 	message := os.Getenv("API_key")
 
 	return message
