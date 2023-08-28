@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart ';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
+import 'package:myapp/detail_route.dart';
 
 //検索結果表示画面
 class SearchPage extends StatefulWidget {
@@ -23,6 +24,8 @@ class SearchPageTodo extends State<SearchPage> {
   final String purpose;
 
   late Future<String> future;
+
+  late VoidCallback onPressed;
 
   //現在地を取得する関数
   _getMYgps() async {
@@ -97,6 +100,23 @@ class SearchPageTodo extends State<SearchPage> {
                       title: Text(_Infos[index]['name']),
                       subtitle: Text(_Infos[index]['place_id']),
                     ),
+                    ElevatedButton(
+                        onPressed: () async {
+                          //新しい画面に遷移;
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              //遷移先の画面に入力されたテキストを渡す
+                              builder: (context) => RoutePage(_Infos[index]),
+                            ),
+                          );
+                          // Navigator.of(context).push(
+                          //   MaterialPageRoute(builder: (context) {
+                          //     return const SearchPage();
+                          //   }),
+                          // );
+                        },
+                        child: const Text('経路を検索')),
                   ],
                 ),
               ),
