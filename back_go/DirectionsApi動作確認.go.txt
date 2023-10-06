@@ -1,0 +1,134 @@
+// DirectionsApi動作確認
+package main
+
+import (
+	// "context"
+	// "labs/lib/env"
+	// "log"
+
+	"encoding/json"
+	"fmt"
+	"labs/lib/call_googlemaps_api"
+
+	"github.com/kr/pretty"
+	// "googlemaps.github.io/maps"
+)
+
+type Route struct {
+	Legs struct{
+		StartLocation struct{
+			Lat float64 `json:"lat"`
+			Lng float64 `json:"lng"`
+		} `json:"start_location"`
+		EndLocation struct{
+			Lat float64 `json:"lat"`
+			Lng float64 `json:"lng"`
+		} `json:"end_location"`
+	} `json:"legs"`
+	OverviewPolyline struct{
+		Points string `json:"points"`
+	} `json:"overview_polyline"`	
+	Bounds struct {
+		Northeast struct {
+			Lat float64 `json:"lat"`
+			Lng float64 `json:"lng"`
+		} `json:"northeast"`
+		Southwest struct {
+			Lat float64 `json:"lat"`
+			Lng float64 `json:"lng"`
+		} `json:"southwest"`
+	} `json:"bounds"`
+}
+
+func main()  {
+	// key := env.ReadEnv()
+	// c, err := maps.NewClient(maps.WithAPIKey(key))
+	// if err != nil {
+	// 	log.Fatalf("fatal error: %s", err)
+	// }
+	// r := &maps.DirectionsRequest{
+	// 	Origin:      "36.6366093,138.189625",
+	// 	Destination: "place_id:ChIJKfDVqiqEHWARG2IXeqxBTdM",
+	// 	Language: "ja",
+	// }
+	// route, _, err := c.Directions(context.Background(), r)
+	// if err != nil {
+	// 	log.Fatalf("fatal error: %s", err)
+	// }
+
+	route := call_googlemaps_api.GetPlaceRoute(36.6366093, 138.189625, "ChIJKfDVqiqEHWARG2IXeqxBTdM")
+	// pretty.Println(route[0].Bounds)
+
+	RouteList := []Route{}
+
+	for _, v := range route {
+		RouteList = append(RouteList, Route{
+			Legs: struct{
+				StartLocation struct{
+					Lat float64 `json:"lat"`
+					Lng float64 `json:"lng"`
+				} `json:"start_location"`
+				EndLocation struct{
+					Lat float64 `json:"lat"`
+					Lng float64 `json:"lng"`
+				} `json:"end_location"`
+			}{
+				StartLocation: struct{
+					Lat float64 `json:"lat"`
+					Lng float64 `json:"lng"`
+				}{
+					Lat: v.Legs[0].StartLocation.Lat,
+					Lng: v.Legs[0].StartLocation.Lng,
+				},
+				EndLocation: struct{
+					Lat float64 `json:"lat"`
+					Lng float64 `json:"lng"`
+				}{
+					Lat: v.Legs[0].EndLocation.Lat,
+					Lng: v.Legs[0].EndLocation.Lng,
+				},
+			},
+
+			OverviewPolyline: struct{
+				Points string `json:"points"`
+			}{
+				Points: v.OverviewPolyline.Points,
+			},
+
+			Bounds: struct {
+				Northeast struct {
+					Lat float64 `json:"lat"`
+					Lng float64 `json:"lng"`
+				} `json:"northeast"`
+				Southwest struct {
+					Lat float64 `json:"lat"`
+					Lng float64 `json:"lng"`
+				} `json:"southwest"`
+			}{
+				Northeast: struct {
+					Lat float64 `json:"lat"`
+					Lng float64 `json:"lng"`
+				}{
+					Lat: v.Bounds.NorthEast.Lat,
+					Lng: v.Bounds.NorthEast.Lng,
+				},
+				Southwest: struct {
+					Lat float64 `json:"lat"`
+					Lng float64 `json:"lng"`
+				}{
+					Lat: v.Bounds.SouthWest.Lat,
+					Lng: v.Bounds.SouthWest.Lng,
+				},
+			},
+		})
+	}
+	
+
+	RouteJsonBytes, err := json.Marshal(RouteList)
+	if err != nil {
+		fmt.Println("JSON Marshal error:", err)
+		return
+	}
+
+	pretty.Println(string(RouteJsonBytes))
+}
