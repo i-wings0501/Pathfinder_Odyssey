@@ -4,8 +4,17 @@
 <dict>
 	<key>NSAllowsArbitraryLoads</key>
         <true/>
+	<!-- This key is required only if your iOS app uses APIs that access the user’s location information at all times, even if the app isn't running. -->
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>The app needs it</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>This app needs access to location when open.</string>
+	<string>The app needs it</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>location</string>
+	</array>
+	<!-- <key>NSLocationWhenInUseUsageDescription</key>
+	<string>This app needs access to location when open.</string> -->
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
