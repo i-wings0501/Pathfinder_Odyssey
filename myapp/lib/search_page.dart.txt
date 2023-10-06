@@ -1,12 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart ';
-// import 'package:geolocator/geolocator.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:myapp/detail_route.dart';
-//追加
-import 'package:myapp/location_client.dart';
-// import 'package:latlong2/latlong.dart';
 
 //検索結果表示画面
 class SearchPage extends StatefulWidget {
@@ -30,16 +27,11 @@ class SearchPageTodo extends State<SearchPage> {
 
   late VoidCallback onPressed;
 
-  //追加
-  final _locationClient = LocationClient();
-  // final _points = <LatLng>[];
-  // LatLng? _currPosition;
-  // bool _isServiceRunning = false;
-
-  // 現在地を取得する関数
+  //現在地を取得する関数
   _getMYgps() async {
     //現在地を取得する
-    final position = await _locationClient.locationStream.first;
+    final position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
     //現在地の緯度を取得する
     final latitude = position.latitude.toString();
     //現在地の経度を取得する
@@ -50,11 +42,11 @@ class SearchPageTodo extends State<SearchPage> {
   }
 
   //https://stackoverflow.com/questions/76427712/the-class-list-doesnt-have-an-unnamed-constructor
-  List _PlaceInfos = [];
+  List _Infos = [];
 
   //localhost:3000のサーバーにhttp通信で現在地から周辺の建物情報をGETする関数
   //https://dev.classmethod.jp/articles/flutter-rest-api/
-  Future<void> http_get_PlaceInfo() async {
+  Future<void> http_get() async {
     //現在地を取得する
     var gps = await _getMYgps();
     //http通信で現在地から周辺の建物情報をGETする
@@ -67,17 +59,16 @@ class SearchPageTodo extends State<SearchPage> {
     if (response.statusCode == 200) {
       var InfosJson = jsonDecode(response.body);
       setState(() {
-        _PlaceInfos = InfosJson;
+        _Infos = InfosJson;
       });
     } else {
       throw Exception('Failed to load album');
     }
   }
 
-  //画面が作成された時に呼び出される関数
   @override
   void initState() {
-    http_get_PlaceInfo();
+    http_get();
     super.initState();
   }
 
@@ -92,7 +83,7 @@ class SearchPageTodo extends State<SearchPage> {
 
         //検索結果表示画面のbody
         body: ListView.builder(
-          itemCount: _PlaceInfos.length,
+          itemCount: _Infos.length,
           itemBuilder: (context, index) {
             return Card(
               child: Padding(
@@ -106,8 +97,8 @@ class SearchPageTodo extends State<SearchPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     ListTile(
-                      title: Text(_PlaceInfos[index]['name']),
-                      subtitle: Text(_PlaceInfos[index]['place_id']),
+                      title: Text(_Infos[index]['name']),
+                      subtitle: Text(_Infos[index]['place_id']),
                     ),
                     ElevatedButton(
                         onPressed: () async {
@@ -116,8 +107,7 @@ class SearchPageTodo extends State<SearchPage> {
                             context,
                             MaterialPageRoute(
                               //遷移先の画面に入力されたテキストを渡す
-                              builder: (context) =>
-                                  RoutePage(_PlaceInfos[index]['place_id']),
+                              builder: (context) => RoutePage(_Infos[index]),
                             ),
                           );
                           // Navigator.of(context).push(

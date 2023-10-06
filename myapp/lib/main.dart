@@ -1,4 +1,7 @@
+//メインアプリ
+
 import 'package:flutter/material.dart';
+// import 'package:myapp/detail_route.dart';
 import 'package:myapp/top_page.dart';
 
 void main() {
@@ -19,7 +22,16 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.green,
       ),
       // リスト一覧画面を表示
+      // home: RoutePage('ChIJKfDVqiqEHWARG2IXeqxBTdM'),
       home: TopPage(),
     );
   }
 }
+
+
+//googlemapの組み込みの確認
+
+// import 'package:flutter/material.dart';
+// import 'package:myapp/demolocation/first_view.dart';
+
+// void main() => runApp(FirstView());
