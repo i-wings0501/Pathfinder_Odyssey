@@ -42,16 +42,19 @@ class RoutePageTodo extends State<RoutePage> {
   List<double> _MYgps = [];
   _getMYgps() async {
     //現在地を取得する
-    final position = await _locationClient.locationStream.first;
+    // final position = await _locationClient.locationStream.first;
+    final position = await _locationClient.getLocation();
     //現在地の緯度を取得する
     final latitude = position.latitude;
     //現在地の経度を取得する
     final longitude = position.longitude;
 
-    setState(() {
-      _MYgps = [latitude, longitude];
-    });
-    await http_get_PlaceRoute(latitude, longitude);
+    if (latitude != null && longitude != null) {
+      setState(() {
+        _MYgps = [latitude, longitude];
+      });
+      await http_get_PlaceRoute(latitude, longitude);
+    }
   }
 
   List _PlaceRoute = [];
@@ -178,7 +181,7 @@ class RoutePageTodo extends State<RoutePage> {
               mapType: MapType.normal,
               //マーカーを指定
               markers: {
-                _firstNowLocationMaker,
+                //_firstNowLocationMaker,
               },
               // {
               //   _goToPlace(
@@ -195,6 +198,8 @@ class RoutePageTodo extends State<RoutePage> {
               },
               //初期表示位置を指定
               initialCameraPosition: _firstNowLocation,
+              //
+              myLocationEnabled: true,
               //現在位置に移動するボタンを表示
               onMapCreated: (GoogleMapController controller) {
                 _controller.complete(controller);

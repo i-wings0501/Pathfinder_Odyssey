@@ -38,8 +38,12 @@ class SearchPageTodo extends State<SearchPage> {
 
   // 現在地を取得する関数
   _getMYgps() async {
+    await _locationClient.init();
     //現在地を取得する
-    final position = await _locationClient.locationStream.first;
+    // final position = await _locationClient.locationStream.first;
+    debugPrint("getLocation 1");
+    final position = await _locationClient.getLocation();
+    debugPrint("getLocation 2");
     //現在地の緯度を取得する
     final latitude = position.latitude.toString();
     //現在地の経度を取得する
