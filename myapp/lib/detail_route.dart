@@ -98,7 +98,8 @@ class RoutePageTodo extends State<RoutePage> {
     final String polylineIdVal = 'polyline_$_polylineIdCounter';
     _polylineIdCounter++;
 
-    debugPrint(points.toString());
+    // デバッグ
+    // debugPrint(points.toString());
     return Polyline(
       polylineId: PolylineId(polylineIdVal),
       width: 5,
@@ -133,12 +134,12 @@ class RoutePageTodo extends State<RoutePage> {
     }
 
     //現在地を取得する
-    CameraPosition _kGooglePlex = CameraPosition(
+    CameraPosition _firstNowLocation = CameraPosition(
       target: LatLng(_MYgps[0], _MYgps[1]),
       zoom: 16.4746,
     );
-    Marker _kGooglePlexMaker = Marker(
-      markerId: MarkerId('_kGooglePlex'),
+    Marker _firstNowLocationMaker = Marker(
+      markerId: MarkerId('_firstNowLocation'),
       infoWindow: InfoWindow(title: '現在地'),
       icon: BitmapDescriptor.defaultMarker,
       position: LatLng(_MYgps[0], _MYgps[1]),
@@ -177,7 +178,7 @@ class RoutePageTodo extends State<RoutePage> {
               mapType: MapType.normal,
               //マーカーを指定
               markers: {
-                _kGooglePlexMaker,
+                _firstNowLocationMaker,
               },
               // {
               //   _goToPlace(
@@ -193,7 +194,7 @@ class RoutePageTodo extends State<RoutePage> {
                 polyline,
               },
               //初期表示位置を指定
-              initialCameraPosition: _kGooglePlex,
+              initialCameraPosition: _firstNowLocation,
               //現在位置に移動するボタンを表示
               onMapCreated: (GoogleMapController controller) {
                 _controller.complete(controller);
