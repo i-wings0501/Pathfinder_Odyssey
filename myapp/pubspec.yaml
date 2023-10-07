@@ -45,9 +45,9 @@ dependencies:
   flutter_map: ^5.0.0
   # flutter_svg: ^1.1.0
   # can't use background location
-  geolocator: ^8.2.1
+  #geolocator: ^8.2.1
   # can use background location
-  location: ^5.0.0
+  location: ^5.0.3
 
 dev_dependencies:
   flutter_test:
