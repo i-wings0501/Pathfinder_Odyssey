@@ -143,7 +143,7 @@ class RoutePageTodo extends State<RoutePage> {
     );
 
     Marker _destinationLocationMaker = Marker(
-      markerId: const MarkerId('_firstNowLocation'),
+      markerId: const MarkerId('_destinationLocation'),
       icon: BitmapDescriptor.defaultMarker,
       position: LatLng(_PlaceRoute[0]['legs']['end_location']['lat'],
           _PlaceRoute[0]['legs']['end_location']['lng']),
