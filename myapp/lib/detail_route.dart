@@ -141,11 +141,12 @@ class RoutePageTodo extends State<RoutePage> {
       target: LatLng(_MYgps[0], _MYgps[1]),
       zoom: 16.4746,
     );
-    Marker _firstNowLocationMaker = Marker(
-      markerId: MarkerId('_firstNowLocation'),
-      infoWindow: InfoWindow(title: '現在地'),
+    //目的地にマーカーを設置する
+    Marker _destinationLocationMaker = Marker(
+      markerId: const MarkerId('_destinationLocation'),
       icon: BitmapDescriptor.defaultMarker,
-      position: LatLng(_MYgps[0], _MYgps[1]),
+      position: LatLng(_PlaceRoute[0]['legs']['end_location']['lat'],
+          _PlaceRoute[0]['legs']['end_location']['lng']),
     );
 
     CameraPosition _NowLocation = CameraPosition(
@@ -164,35 +165,15 @@ class RoutePageTodo extends State<RoutePage> {
       ),
       body: Column(
         children: [
-          Row(
-            children: [
-              // Expanded(
-              //     child: Text(
-              //         _PlaceRoute[0]['overview_polyline']['points'].toString(),
-              //         style: const TextStyle(
-              //           fontSize: 25,
-              //           fontWeight: FontWeight.w100,
-              //         ))),
-            ],
-          ),
           Expanded(
             child: GoogleMap(
               //マップタイプを指定
               mapType: MapType.normal,
               //マーカーを指定
               markers: {
-                //_firstNowLocationMaker,
+                _destinationLocationMaker,
               },
-              // {
-              //   _goToPlace(
-              //     _PlaceRoute[0]['legs']['start_location']['lat'],
-              //     _PlaceRoute[0]['legs']['start_location']['lng'],
-              //     _PlaceRoute[0]['bounds']['northeast'],
-              //     _PlaceRoute[0]['bounds']['southwest'],
-              //   ),
-              // },
-
-              polygons: _polygons,
+              // polygons: _polygons,
               polylines: {
                 polyline,
               },
@@ -220,31 +201,10 @@ class RoutePageTodo extends State<RoutePage> {
       ),
     );
 
-    // Future<void> _goToPlace(
-    //   // Map<String, dynamic> place,
-    //   double lat,
-    //   double lng,
-    //   Map<String, dynamic> boundsNe,
-    //   Map<String, dynamic> boundsSw,
-    // ) async {
-    //   // final double lat = place['geometry']['location']['lat'];
-    //   // final double lng = place['geometry']['location']['lng'];
-
-    //   final GoogleMapController controller = await _controller.future;
-    //   controller.animateCamera(
-    //     CameraUpdate.newCameraPosition(
-    //       CameraPosition(target: LatLng(lat, lng), zoom: 12),
-    //     ),
-    //   );
-
-    //   controller.animateCamera(
-    //     CameraUpdate.newLatLngBounds(
-    //         LatLngBounds(
-    //           southwest: LatLng(boundsSw['lat'], boundsSw['lng']),
-    //           northeast: LatLng(boundsNe['lat'], boundsNe['lng']),
-    //         ),
-    //         25),
-    //   );
-    // }
+    // _PlaceRoute
+    // _PlaceRoute[0]['legs']['start_location']['lat'],
+    // _PlaceRoute[0]['legs']['start_location']['lng'],
+    // _PlaceRoute[0]['bounds']['northeast'],
+    // _PlaceRoute[0]['bounds']['southwest'],
   }
 }
