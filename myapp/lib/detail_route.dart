@@ -141,7 +141,7 @@ class RoutePageTodo extends State<RoutePage> {
       target: LatLng(_MYgps[0], _MYgps[1]),
       zoom: 16.4746,
     );
-
+    //目的地にマーカーを設置する
     Marker _destinationLocationMaker = Marker(
       markerId: const MarkerId('_destinationLocation'),
       icon: BitmapDescriptor.defaultMarker,
