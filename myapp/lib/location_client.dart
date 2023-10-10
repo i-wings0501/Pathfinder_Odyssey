@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
@@ -25,15 +26,18 @@ class LocationClient {
       permissionStatus = await _location.requestPermission();
       debugPrint("post requestPermission");
     }
-    if (permissionStatus == PermissionStatus.granted) {
-      debugPrint("pre enableBackgroundMode");
-      await _location.enableBackgroundMode();
-      debugPrint("post enableBackgroundMode");
-      await _location.changeNotificationOptions(
-        title: 'Geolocation',
-        subtitle: 'Geolocation detection',
-      );
-      debugPrint("post changeNotificationOptions");
+    // when platform is browser
+    if (!kIsWeb) {
+      if (permissionStatus == PermissionStatus.granted) {
+        debugPrint("pre enableBackgroundMode");
+        await _location.enableBackgroundMode();
+        debugPrint("post enableBackgroundMode");
+        await _location.changeNotificationOptions(
+          title: 'Geolocation',
+          subtitle: 'Geolocation detection',
+        );
+        debugPrint("post changeNotificationOptions");
+      }
     }
   }
 
