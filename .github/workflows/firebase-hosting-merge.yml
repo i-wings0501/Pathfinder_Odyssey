@@ -28,3 +28,5 @@ jobs:
           channelId: live
           projectId: splendid-alpha-396809
           entryPoint: "./myapp"
+        env:
+          FIREBASE_CLI_PREVIEWS: webframeworks
