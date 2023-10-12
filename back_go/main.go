@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"labs/lib/call_googlemaps_api"
+	"labs/lib/get_photo_data"
 	"net/http"
 	"strconv"
 )
@@ -15,6 +16,9 @@ type PlaceInfo struct {
 
 	// 店舗ID
 	PlaceID string `json:"place_id"`
+
+	// 写真URL
+	PhotoURLs []string `json:"photo_urls"`
 }
 
 // 経路情報を格納する構造体
@@ -96,12 +100,26 @@ func gps_handler(w http.ResponseWriter, r *http.Request) {
 	}
 
     // レスポンスボディの書き込み
-	PlaceInfoData := call_googlemaps_api.GetPlaceInfo(lat64,lng64,purpose)
+	PlaceInfoData :=  call_googlemaps_api.GetPlaceInfo(lat64,lng64,purpose)
 	PlaceInfoList := []PlaceInfo{}
 	//// PlaceID := []string{}
 	// リストPlaceInfoListに店舗名、店舗IDをfor文で格納
 	for i := 0; i < len(PlaceInfoData.Results); i++ {
-		PlaceInfoList = append(PlaceInfoList,PlaceInfo{PlaceInfoData.Results[i].Name, PlaceInfoData.Results[i].PlaceID});
+		// 写真URLリストのリセット
+		url_list := []string{}
+		// 写真情報ごとに
+		for _, place := range get_photo_data.ReturnPhotoReference(PlaceInfoData.Results[i].PlaceID) {
+			// 写真URLを取得してリストに追加
+			for _, photo := range place.Photos {
+				url_list = append(url_list, get_photo_data.ReturnPhotoDataURL(photo.PhotoReference))
+			}
+		}
+		placeInfo := PlaceInfo{
+			Name:      PlaceInfoData.Results[i].Name,
+			PlaceID:   PlaceInfoData.Results[i].PlaceID,
+			PhotoURLs: url_list,
+		}
+		PlaceInfoList = append(PlaceInfoList, placeInfo)
 	}
 
 	// json形式に変換

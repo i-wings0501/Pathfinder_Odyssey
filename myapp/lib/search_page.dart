@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 // import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
@@ -55,7 +55,6 @@ class SearchPageTodo extends State<SearchPage> {
 
   //https://stackoverflow.com/questions/76427712/the-class-list-doesnt-have-an-unnamed-constructor
   List _PlaceInfos = [];
-
   //localhost:3000のサーバーにhttp通信で現在地から周辺の建物情報をGETする関数
   //https://dev.classmethod.jp/articles/flutter-rest-api/
   Future<void> http_get_PlaceInfo() async {
@@ -99,65 +98,74 @@ class SearchPageTodo extends State<SearchPage> {
           itemCount: _PlaceInfos.length,
           itemBuilder: (context, index) {
             return Card(
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  top: 30,
-                  bottom: 150,
-                  left: 16,
-                  right: 16,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    ListTile(
-                      title: Text(_PlaceInfos[index]['name']),
-                      subtitle: Text(_PlaceInfos[index]['place_id']),
-                    ),
-                    ElevatedButton(
-                        onPressed: () async {
-                          //新しい画面に遷移;
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              //遷移先の画面に入力されたテキストを渡す
-                              builder: (context) =>
-                                  RoutePage(_PlaceInfos[index]['place_id']),
-                            ),
-                          );
-                          // Navigator.of(context).push(
-                          //   MaterialPageRoute(builder: (context) {
-                          //     return const SearchPage();
-                          //   }),
-                          // );
-                        },
-                        child: const Text('経路を検索')),
-                  ],
-                ),
+                child: Padding(
+              padding: const EdgeInsets.only(
+                top: 30,
+                bottom: 30,
+                left: 16,
+                right: 16,
               ),
-            );
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  ListTile(
+                    title: Text(_PlaceInfos[index]['name']),
+                    subtitle: Text(_PlaceInfos[index]['place_id']),
+                  ),
+                  ElevatedButton(
+                      onPressed: () async {
+                        //新しい画面に遷移;
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            //遷移先の画面に入力されたテキストを渡す
+                            builder: (context) =>
+                                RoutePage(_PlaceInfos[index]['place_id']),
+                          ),
+                        );
+                      },
+                      child: const Text('経路を検索')),
+                  Center(
+                      child: CarouselSlider(
+                    options: CarouselOptions(
+                      height: 250.0,
+                    ),
+                    // List<dynamic> to List<Widget> : https://stackoverflow.com/questions/49603021/type-listdynamic-is-not-a-subtype-of-type-listwidget
+                    // 写真の出力 : https://oflutter.com/solved-invalid-character-at-character-5-data-image-png-base64/
+                    items: _PlaceInfos[index]['photo_urls']
+                        .map<Widget>((photo_urls) {
+                      return Container(
+                        width: MediaQuery.of(context).size.width,
+                        margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                        decoration: const BoxDecoration(
+                            color: Color.fromARGB(31, 212, 209, 209)),
+                        child: Image.memory(Uri.parse(photo_urls.toString())
+                            .data!
+                            .contentAsBytes()),
+                      );
+                    }).toList(),
+                    // disableGesture: true,
+                    // carouselController: CarouselController(),
+                  )
+                      // ループで記述する(for() or map()) : https://zenn.dev/kenghaya/articles/170fde921faf60
+                      // children: <Widget>[
+                      //   Padding(padding: EdgeInsets.all(10),
+                      //   for (var photo_url in _PlaceInfos[index]['photo_urls'])
+                      //     Image.memory(Uri.parse(photo_url.toString())
+                      //         .data!
+                      //         .contentAsBytes()),)
+                      // ],
+                      // _PlaceInfos[index]['photo_urls']
+                      //     .map<Widget>((photo_urls) {
+                      //   return Image.memory(Uri.parse(photo_urls.toString())
+                      //       .data!
+                      //       .contentAsBytes());
+                      // }).toList(),
+                      ),
+                ],
+              ),
+            ));
           },
-        )
-        // body: Center(
-        //   child: Center(
-        //     child: Column(
-        //       //中央配置
-        //       mainAxisAlignment: MainAxisAlignment.center,
-        //       children: [
-        //         FutureBuilder(
-        //           future: future,
-        //           builder: (context, AsyncSnapshot<String> snapshot) {
-        //             if (snapshot.hasData) {
-        //               return Text(snapshot.data![0]);
-        //             } else if (snapshot.hasError) {
-        //               return Text("${snapshot.error}");
-        //             }
-        //             return const CircularProgressIndicator();
-        //           },
-        //         ),
-        //       ],
-        //     ),
-        //   ),
-        // ),
-        );
+        ));
   }
 }

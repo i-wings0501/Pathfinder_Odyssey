@@ -1,3 +1,4 @@
+// https://pkg.go.dev/googlemaps.github.io/maps
 package call_googlemaps_api
 
 import (
@@ -9,6 +10,7 @@ import (
 	"googlemaps.github.io/maps"
 )
 
+// 店舗情報取得関数
 func GetPlaceInfo(latitude float64, longitude float64, purpose string) maps.PlacesSearchResponse {
 	key := env.ReadEnv()
 	c, err := maps.NewClient(maps.WithAPIKey(key))
@@ -20,13 +22,13 @@ func GetPlaceInfo(latitude float64, longitude float64, purpose string) maps.Plac
 			Lat: latitude,
 			Lng: longitude,
 		},
-		Radius : 1500,
+		Radius : 1000,
 		Keyword: purpose,
 		Language: "ja",
 		// MinPrice :"PriceLevel",
 		// MaxPrice :"PriceLevel",
 		// Name :"string",
-		// OpenNow: "bool",
+		OpenNow: true,
 		// RankBy:"",
 		// Type :"PlaceType",
 		// PageToken: "string",
@@ -56,4 +58,41 @@ func GetPlaceRoute(latitude float64, longitude float64, place_id string) []maps.
 	}
 
 	return place_route
+}
+
+// 店舗詳細情報取得関数
+func GetPlaceDetail(place_id string) maps.PlaceDetailsResult{
+	key := env.ReadEnv()
+	c, err := maps.NewClient(maps.WithAPIKey(key))
+	if err != nil {
+		log.Fatalf("fatal error: %s", err)
+	}
+	r := &maps.PlaceDetailsRequest{
+		PlaceID:  place_id,
+		Language: "ja",
+	}
+	place_detail, err := c.PlaceDetails(context.Background(), r)
+	if err != nil {
+		log.Fatalf("fatal error: %s", err)
+	}
+
+	return place_detail
+}
+
+func GetPlacePhoto(photo_reference string) maps.PlacePhotoResponse{
+	key := env.ReadEnv()
+	c, err := maps.NewClient(maps.WithAPIKey(key))
+	if err != nil {
+		log.Fatalf("fatal error: %s", err)
+	}
+	r := &maps.PlacePhotoRequest{
+		PhotoReference:  photo_reference,
+		MaxHeight:250,
+	}
+	place_photo, err := c.PlacePhoto(context.Background(), r)
+	if err != nil {
+		log.Fatalf("fatal error: %s", err)
+	}
+
+	return place_photo
 }
