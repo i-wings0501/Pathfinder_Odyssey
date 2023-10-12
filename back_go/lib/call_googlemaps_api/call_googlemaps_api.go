@@ -96,5 +96,3 @@ func GetPlacePhoto(photo_reference string) maps.PlacePhotoResponse{
 
 	return place_photo
 }
-
-// func GetPhotoImage()
