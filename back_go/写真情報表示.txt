@@ -1,0 +1,19 @@
+// 写真の表示
+package main
+
+import (
+	"fmt"
+	"labs/lib/get_photo_data"
+)
+
+func main(){
+	url_list := []string{}
+
+	for _, place := range get_photo_data.ReturnPhotoReference("ChIJN1t_tDeuEmsRUsoyG83frY4") {
+		for _, photo := range place.Photos {
+			// get_photo_data.ReturnPhotoDataURL(photo.PhotoReference)
+			url_list = append(url_list, get_photo_data.ReturnPhotoDataURL(photo.PhotoReference))
+		}
+	}
+	fmt.Println(url_list[0])
+}
