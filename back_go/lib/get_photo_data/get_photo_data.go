@@ -2,8 +2,8 @@ package get_photo_data
 
 import (
 	b64 "encoding/base64"
-	"io"
 	"fmt"
+	"io"
 	"labs/lib/call_googlemaps_api"
 )
 

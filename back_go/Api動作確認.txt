@@ -1,0 +1,98 @@
+// Api動作確認
+package main
+
+import (
+	// "context"
+	"context"
+	"labs/lib/env"
+	"log"
+
+	// "log"
+
+	"encoding/json"
+	"fmt"
+	"labs/lib/call_googlemaps_api"
+
+	"github.com/kr/pretty"
+	"googlemaps.github.io/maps"
+)
+
+type PlaceInfo struct {
+	// 店舗名
+	Name string `json:"name"`
+
+	// 店舗ID
+	PlaceID string `json:"place_id"`
+
+	// 営業時間
+	OpenNow *bool `json:"open_now"`
+}
+
+type Route struct {
+	Legs struct{
+		StartLocation struct{
+			Lat float64 `json:"lat"`
+			Lng float64 `json:"lng"`
+		} `json:"start_location"`
+		EndLocation struct{
+			Lat float64 `json:"lat"`
+			Lng float64 `json:"lng"`
+		} `json:"end_location"`
+	} `json:"legs"`
+	OverviewPolyline struct{
+		Points string `json:"points"`
+	} `json:"overview_polyline"`	
+	Bounds struct {
+		Northeast struct {
+			Lat float64 `json:"lat"`
+			Lng float64 `json:"lng"`
+		} `json:"northeast"`
+		Southwest struct {
+			Lat float64 `json:"lat"`
+			Lng float64 `json:"lng"`
+		} `json:"southwest"`
+	} `json:"bounds"`
+}
+
+func main()  {
+	PlaceInfoData := call_googlemaps_api.GetPlaceDetail("ChIJN1t_tDeuEmsRUsoyG83frY4")
+	PlaceInfoList := []PlaceInfo{}
+	//// PlaceID := []string{}
+	
+	for i := 0; i < len(PlaceInfoData.Results); i++ {
+		// リストPlaceInfoListに店舗名、店舗IDをfor文で格納
+		PlaceInfoList = append(PlaceInfoList,PlaceInfo{PlaceInfoData.Results[i].Name, PlaceInfoData.Results[i].PlaceID, PlaceInfoData.Results[i].OpeningHours.OpenNow});
+
+		// 店舗IDを利用し、店舗の詳細情報を取得する
+
+	}
+
+	// json形式に変換
+	InfoJsonBytes, err := json.Marshal(PlaceInfoList)
+	if err != nil {
+		fmt.Println("JSON Marshal error:", err)
+		return
+	}
+
+    // pretty.Println(PlaceInfoData.Results[0].OpeningHours.OpenNow)
+	pretty.Println(string(InfoJsonBytes))
+}
+
+// 店舗詳細情報取得関数
+func GetPlaceDetail(place_id string) maps.PlaceDetailsResult{
+	key := env.ReadEnv()
+	c, err := maps.NewClient(maps.WithAPIKey(key))
+	if err != nil {
+		log.Fatalf("fatal error: %s", err)
+	}
+	r := &maps.PlaceDetailsRequest{
+		PlaceID:  place_id,
+		Language: "ja",
+	}
+	place_detail, err := c.PlaceDetails(context.Background(), r)
+	if err != nil {
+		log.Fatalf("fatal error: %s", err)
+	}
+
+	return place_detail
+}

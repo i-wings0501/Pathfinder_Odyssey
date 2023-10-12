@@ -1,3 +1,4 @@
+// https://pkg.go.dev/googlemaps.github.io/maps
 package call_googlemaps_api
 
 import (
@@ -9,6 +10,7 @@ import (
 	"googlemaps.github.io/maps"
 )
 
+// 店舗情報取得関数
 func GetPlaceInfo(latitude float64, longitude float64, purpose string) maps.PlacesSearchResponse {
 	key := env.ReadEnv()
 	c, err := maps.NewClient(maps.WithAPIKey(key))
