@@ -22,13 +22,13 @@ func GetPlaceInfo(latitude float64, longitude float64, purpose string) maps.Plac
 			Lat: latitude,
 			Lng: longitude,
 		},
-		Radius : 1500,
+		Radius : 1000,
 		Keyword: purpose,
 		Language: "ja",
 		// MinPrice :"PriceLevel",
 		// MaxPrice :"PriceLevel",
 		// Name :"string",
-		// OpenNow: "bool",
+		OpenNow: true,
 		// RankBy:"",
 		// Type :"PlaceType",
 		// PageToken: "string",
@@ -96,3 +96,5 @@ func GetPlacePhoto(photo_reference string) maps.PlacePhotoResponse{
 
 	return place_photo
 }
+
+// func GetPhotoImage()
