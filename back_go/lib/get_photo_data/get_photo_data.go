@@ -1,6 +1,8 @@
 package get_photo_data
 
 import (
+	b64 "encoding/base64"
+	"io"
 	"fmt"
 	"labs/lib/call_googlemaps_api"
 )
@@ -23,3 +25,14 @@ func ReturnPhotoReference(place_id string) []PlaceDetail {
 	return PlaceDetailList
 }
 
+func ReturnPhotoDataURL(photo_reference string) string {
+	PlacePhotoData := call_googlemaps_api.GetPlacePhoto(photo_reference)
+	photoBytes, err := io.ReadAll(PlacePhotoData.Data)
+	if err != nil {
+		fmt.Println(err)
+	}
+	sEnc := b64.StdEncoding.EncodeToString(photoBytes)
+	dataUrl := fmt.Sprintf("data:%s;base64,%s", PlacePhotoData.ContentType, sEnc)
+	
+	return dataUrl
+}
