@@ -87,6 +87,23 @@ class SearchPageTodo extends State<SearchPage> {
   //画面の描画
   @override
   Widget build(BuildContext context) {
+    if (_PlaceInfos.isEmpty) {
+      return Scaffold(
+          appBar: AppBar(
+            //検索結果表示画面のタイトル
+            title: const Text('検索中'),
+          ),
+          body: const Scaffold(
+            backgroundColor: Colors.white,
+            body: Center(
+              child: SizedBox(
+                height: 50,
+                width: 50,
+                child: CircularProgressIndicator(),
+              ),
+            ),
+          ));
+    }
     return Scaffold(
         appBar: AppBar(
           //検索結果表示画面のタイトル
