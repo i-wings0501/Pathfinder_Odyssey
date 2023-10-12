@@ -76,3 +76,21 @@ func GetPlaceDetail(place_id string) maps.PlaceDetailsResult{
 
 	return place_detail
 }
+
+func GetPlacePhoto(photo_reference string) maps.PlacePhotoResponse{
+	key := env.ReadEnv()
+	c, err := maps.NewClient(maps.WithAPIKey(key))
+	if err != nil {
+		log.Fatalf("fatal error: %s", err)
+	}
+	r := &maps.PlacePhotoRequest{
+		PhotoReference:  photo_reference,
+		MaxHeight:250,
+	}
+	place_photo, err := c.PlacePhoto(context.Background(), r)
+	if err != nil {
+		log.Fatalf("fatal error: %s", err)
+	}
+
+	return place_photo
+}
