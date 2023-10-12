@@ -131,33 +131,47 @@ class SearchPageTodo extends State<SearchPage> {
                           // );
                         },
                         child: const Text('経路を検索')),
-                  ],
-                ),
+                  Center(
+                      child: CarouselSlider(
+                    options: CarouselOptions(
+                      height: 250.0,
+                    ),
+                    // List<dynamic> to List<Widget> : https://stackoverflow.com/questions/49603021/type-listdynamic-is-not-a-subtype-of-type-listwidget
+                    // 写真の出力 : https://oflutter.com/solved-invalid-character-at-character-5-data-image-png-base64/
+                    items: _PlaceInfos[index]['photo_urls']
+                        .map<Widget>((photo_urls) {
+                      return Container(
+                        width: MediaQuery.of(context).size.width,
+                        margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                        decoration: const BoxDecoration(
+                            color: Color.fromARGB(31, 212, 209, 209)),
+                        child: Image.memory(Uri.parse(photo_urls.toString())
+                            .data!
+                            .contentAsBytes()),
+                      );
+                    }).toList(),
+                    // disableGesture: true,
+                    // carouselController: CarouselController(),
+                  )
+                      // ループで記述する(for() or map()) : https://zenn.dev/kenghaya/articles/170fde921faf60
+                      // children: <Widget>[
+                      //   Padding(padding: EdgeInsets.all(10),
+                      //   for (var photo_url in _PlaceInfos[index]['photo_urls'])
+                      //     Image.memory(Uri.parse(photo_url.toString())
+                      //         .data!
+                      //         .contentAsBytes()),)
+                      // ],
+                      // _PlaceInfos[index]['photo_urls']
+                      //     .map<Widget>((photo_urls) {
+                      //   return Image.memory(Uri.parse(photo_urls.toString())
+                      //       .data!
+                      //       .contentAsBytes());
+                      // }).toList(),
+                      ),
+                ],
               ),
-            );
+            ));
           },
-        )
-        // body: Center(
-        //   child: Center(
-        //     child: Column(
-        //       //中央配置
-        //       mainAxisAlignment: MainAxisAlignment.center,
-        //       children: [
-        //         FutureBuilder(
-        //           future: future,
-        //           builder: (context, AsyncSnapshot<String> snapshot) {
-        //             if (snapshot.hasData) {
-        //               return Text(snapshot.data![0]);
-        //             } else if (snapshot.hasError) {
-        //               return Text("${snapshot.error}");
-        //             }
-        //             return const CircularProgressIndicator();
-        //           },
-        //         ),
-        //       ],
-        //     ),
-        //   ),
-        // ),
-        );
+        ));
   }
 }
