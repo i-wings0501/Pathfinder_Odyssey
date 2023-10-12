@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 // import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
@@ -55,7 +55,6 @@ class SearchPageTodo extends State<SearchPage> {
 
   //https://stackoverflow.com/questions/76427712/the-class-list-doesnt-have-an-unnamed-constructor
   List _PlaceInfos = [];
-
   //localhost:3000のサーバーにhttp通信で現在地から周辺の建物情報をGETする関数
   //https://dev.classmethod.jp/articles/flutter-rest-api/
   Future<void> http_get_PlaceInfo() async {
@@ -99,38 +98,33 @@ class SearchPageTodo extends State<SearchPage> {
           itemCount: _PlaceInfos.length,
           itemBuilder: (context, index) {
             return Card(
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  top: 30,
-                  bottom: 150,
-                  left: 16,
-                  right: 16,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    ListTile(
-                      title: Text(_PlaceInfos[index]['name']),
-                      subtitle: Text(_PlaceInfos[index]['place_id']),
-                    ),
-                    ElevatedButton(
-                        onPressed: () async {
-                          //新しい画面に遷移;
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              //遷移先の画面に入力されたテキストを渡す
-                              builder: (context) =>
-                                  RoutePage(_PlaceInfos[index]['place_id']),
-                            ),
-                          );
-                          // Navigator.of(context).push(
-                          //   MaterialPageRoute(builder: (context) {
-                          //     return const SearchPage();
-                          //   }),
-                          // );
-                        },
-                        child: const Text('経路を検索')),
+                child: Padding(
+              padding: const EdgeInsets.only(
+                top: 30,
+                bottom: 30,
+                left: 16,
+                right: 16,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  ListTile(
+                    title: Text(_PlaceInfos[index]['name']),
+                    subtitle: Text(_PlaceInfos[index]['place_id']),
+                  ),
+                  ElevatedButton(
+                      onPressed: () async {
+                        //新しい画面に遷移;
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            //遷移先の画面に入力されたテキストを渡す
+                            builder: (context) =>
+                                RoutePage(_PlaceInfos[index]['place_id']),
+                          ),
+                        );
+                      },
+                      child: const Text('経路を検索')),
                   Center(
                       child: CarouselSlider(
                     options: CarouselOptions(
