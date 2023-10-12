@@ -21,3 +21,4 @@ jobs:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
           firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_SPLENDID_ALPHA_396809 }}"
           projectId: splendid-alpha-396809
+          entryPoint: "./myapp"
