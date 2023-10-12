@@ -122,7 +122,7 @@ class RoutePageTodo extends State<RoutePage> {
       return Scaffold(
           appBar: AppBar(
             //検索結果表示画面のタイトル
-            title: const Text('経路'),
+            title: const Text('検索中'),
           ),
           body: const Scaffold(
             backgroundColor: Colors.white,
