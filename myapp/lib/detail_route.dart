@@ -62,7 +62,8 @@ class RoutePageTodo extends State<RoutePage> {
     //http通信で現在地から周辺の建物情報をGETする
     var response = await http.get(Uri.parse(
         //localhost:3000/gps?lat=latitude&lon=longitude&purpose=purpose
-        "http://localhost:3000/route?lat=${lat.toString()}&lon=${lng.toString()}&place_id=$place_id"));
+        // "http://localhost:3000/route?lat=${lat.toString()}&lon=${lng.toString()}&place_id=$place_id")); //localhost
+        "https://backgo-fdv6af7ohq-uw.a.run.app/route?lat=${lat.toString()}&lon=${lng.toString()}&place_id=$place_id"));
 
     //200--success
     //http通信の結果をJson型に変換する

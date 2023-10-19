@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"labs/lib/call_googlemaps_api"
 	"labs/lib/get_photo_data"
+	"log"
 	"net/http"
+	"os"
 	"strconv"
 )
 
@@ -59,8 +61,16 @@ func main() {
 	// 経路情報の取得
 	http.HandleFunc("/route", route_handler)
 
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "3000"
+	}
+	fmt.Println("port: " + port)
 	fmt.Println("start server")
-    http.ListenAndServe("localhost:3000", nil)
+	if err := http.ListenAndServe(":"+port, nil); err != nil {
+		log.Fatal(err)
+	}
+	// http.ListenAndServe(":" + port, nil)
 }
 
 // 店舗情報の取得

@@ -63,7 +63,8 @@ class SearchPageTodo extends State<SearchPage> {
     //http通信で現在地から周辺の建物情報をGETする
     var response = await http.get(Uri.parse(
         //localhost:3000/gps?lat=latitude&lon=longitude&purpose=purpose
-        "http://localhost:3000/gps?lat=${gps[0]}&lon=${gps[1]}&purpose=$purpose"));
+        // "http://localhost:3000/gps?lat=${gps[0]}&lon=${gps[1]}&purpose=$purpose")); //localhost
+        "https://backgo-fdv6af7ohq-uw.a.run.app/gps?lat=${gps[0]}&lon=${gps[1]}&purpose=$purpose"));
 
     //200--success
     //http通信の結果をJson型に変換する
